@@ -179,25 +179,6 @@ void setup() {
   display.display();
 }
 
-/*void connectWiFi() {
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-  Serial.print("WiFi connecting");
-  unsigned long start = millis();
-
-  while (WiFi.status() != WL_CONNECTED) {
-    if (millis() - start > 20000) {
-      Serial.println("\nWiFi failed");
-      return;
-    }
-    Serial.print(".");
-    delay(250);
-  }
-
-  Serial.println("\nWiFi connected");
-}
-*/
 // --------------------Loop --------------------
 void loop() {
   time_t now = currentEpoch();
