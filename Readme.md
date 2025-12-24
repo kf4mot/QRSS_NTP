@@ -55,7 +55,7 @@ const char* message[] = {"-.-", "..-.", "....-", "--", "---", "-", NULL}; //KF4M
 ```
 
 ## Known limitations
--Requires Wi-Fi for initial time sync
--No automatic re-sync scheduling
--Message is currently hard-coded
+- Requires Wi-Fi for initial time sync
+- No automatic re-sync scheduling
+- Message is currently hard-coded
 
