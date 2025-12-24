@@ -18,7 +18,7 @@ The design ensures reliable 10-minute transmission cycles and provides visual fe
 
 ## Hardware
 - **ESP32-C3-Zero** (https://www.waveshare.com/wiki/ESP32-C3-Zero)
-- **Si5351 Clock Generator**
+- **Si5351 Clock Generator** (https://learn.adafruit.com/adafruit-si5351-clock-generator-breakout/downloads)
   - CLK1 used for RF output.
 - **SSD1306 OLED Display**
   - SDA → GPIO 6
@@ -53,4 +53,8 @@ Create a `Credentials.h` file in the project folder with your Wi-Fi credentials:
 // Morse sequence for transmission
 const char* message[] = {"-.-", "..-.", "....-", "--", "---", "-", NULL}; //KF4MOT. Replace with USER CALLSIGN
 
+## Known limitations
+-Requires Wi-Fi for initial time sync
+-No automatic re-sync scheduling
+-Message is currently hard-coded
 
