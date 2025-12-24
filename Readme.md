@@ -52,6 +52,7 @@ Create a `Credentials.h` file in the project folder with your Wi-Fi credentials:
 #define WIFI_PASSWORD "your_wifi_password"
 // Morse sequence for transmission
 const char* message[] = {"-.-", "..-.", "....-", "--", "---", "-", NULL}; //KF4MOT. Replace with USER CALLSIGN
+```
 
 ## Known limitations
 -Requires Wi-Fi for initial time sync
