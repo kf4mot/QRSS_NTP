@@ -45,9 +45,12 @@ The design ensures reliable 10-minute transmission cycles and provides visual fe
 Create a `Credentials.h` file in the project folder with your Wi-Fi credentials:
 
 ```cpp
+#pragma once
+
+//Wifi
 #define WIFI_SSID "your_wifi_ssid"
 #define WIFI_PASSWORD "your_wifi_password"
 // Morse sequence for transmission
-const char* message[] = {"-.-", "..-.", "....-", "--", "---", "-", NULL}; //KF4MOT. Replace with USER_CALLSIGN
+const char* message[] = {"-.-", "..-.", "....-", "--", "---", "-", NULL}; //KF4MOT. Replace with USER CALLSIGN
 
 
