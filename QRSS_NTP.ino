@@ -62,7 +62,7 @@ uint64_t MARK  = base + shift;
 uint64_t SPACE = base;
 
 // -------------------- QRSS timing --------------------
-const int dit = 6000;         // QRSS6 mS
+const int dit = 6000;         // QRSS6 ms
 const int dah = dit * 3;
 const int sym_pause = dit;
 const int char_pause = dit * 3;

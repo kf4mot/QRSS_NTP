@@ -17,7 +17,7 @@ The design ensures reliable 10-minute transmission cycles and provides visual fe
 - **Serial Logging**: Prints state transitions and TX events.
 
 ## Hardware
-- **ESP32**
+- **ESP32-C3-Zero** (https://www.waveshare.com/wiki/ESP32-C3-Zero)
 - **Si5351 Clock Generator**
   - CLK1 used for RF output.
 - **SSD1306 OLED Display**
