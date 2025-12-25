@@ -55,8 +55,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // -------------------- SI5351 --------------------
 Si5351 si5351;
 int32_t manual_offset_hz = -145;  // freq. calibration
-//uint64_t base = (10140000ULL + manual_offset_hz) * 100ULL;
-uint64_t base = (10131000ULL + manual_offset_hz) * 100ULL; //JS8 freq. bench testing
+uint64_t base = (10140000ULL + manual_offset_hz) * 100ULL;
+//uint64_t base = (10131000ULL + manual_offset_hz) * 100ULL; //JS8 freq. bench testing
 uint64_t shift = 10ULL * 100ULL;
 uint64_t MARK  = base + shift;
 uint64_t SPACE = base;
@@ -79,13 +79,13 @@ int currentSymbol = 0;
 unsigned long stateMillis = 0;
 
 //-----------------------Declarations-----------------
-void connectWiFi();
-bool syncTimeUTC();
-time_t currentEpoch();
-bool isTransmitWindow(time_t now);
+//void connectWiFi();
+//bool syncTimeUTC();
+//time_t currentEpoch();
+//bool isTransmitWindow(time_t now);
 
-void setFreq(char s);
-void stopFreq();
+//void setFreq(char s);
+//void stopFreq();
 
 // -------------------- Helpers --------------------
 void setFreq(char s) {
@@ -131,6 +131,29 @@ bool syncTimeUTC() {
   return false;
 }
 
+//--------------------WiFi Status Update--------------------
+
+int lastWiFiStatus = -1; // global variable to remember last Wi-Fi status
+
+void updateWiFiStatus() {
+    int currentStatus = WiFi.status();
+    if (currentStatus != lastWiFiStatus) {
+        lastWiFiStatus = currentStatus;
+
+        display.fillRect(0, 48, 128, 16, BLACK); // Clear line 4
+
+        display.setCursor(0, 60); // Set cursor to line 4
+
+        if (currentStatus == WL_CONNECTED) {
+            display.println("Wi-Fi: Connected");
+        } else {
+            display.println("Wi-Fi: Offline");
+        }
+
+        display.display();
+    }
+}
+
 //--------------------Time helpers----------------------
 time_t currentEpoch() {
   if (!timeValid) return 0;
@@ -154,7 +177,7 @@ void setup() {
   display.clearDisplay();
   display.setFont(&Fixed8x16);
   display.setTextColor(WHITE);
-  display.setCursor(0, 12);
+  display.setCursor(0, 12); //Line 1
   display.println("DFCW NTP KF4MOT");
   display.display();
 
@@ -171,17 +194,26 @@ void setup() {
   }
 
   si5351.set_freq(SPACE, SI5351_CLK1);
-  si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_6MA);
+  si5351.drive_strength(SI5351_CLK1, SI5351_DRIVE_8MA); //2, 4, 6, or 8MA
   si5351.output_enable(SI5351_CLK1, 0);
 
-  display.setCursor(0, 26);
-  display.println("   INIT OK");
+  display.setCursor(0, 28); //Line 2
+  display.println("INIT OK");
   display.display();
+
+uint64_t freq_hz = base / 100ULL;   // centi-Hz → Hz
+float freq_mhz = freq_hz / 1e6;     // Hz → MHz
+
+display.setCursor(0, 44); //Line 3
+display.print(freq_mhz, 3);
+display.println(" MHz");
 }
 
 // --------------------Loop --------------------
 void loop() {
   time_t now = currentEpoch();
+
+  updateWiFiStatus();
 
   if (txState == IDLE && timeValid && isTransmitWindow(now) && now != lastTxEpoch) {
     lastTxEpoch = now;
@@ -190,9 +222,15 @@ void loop() {
     txState = TX_CHAR;
 
     Serial.printf("[TX] UTC epoch %lu\n", now);
-    display.fillRect(0, 12, 128, 60, BLACK);
-    display.setCursor(0,45);
-    display.println("     ON AIR");
+    if (WiFi.status() == WL_CONNECTED) {
+  Serial.println("Wi-Fi: Connected");
+} else {
+  Serial.printf("Wi-Fi: Offline (status=%d)\n", WiFi.status());
+}
+
+    display.fillRect(0, 16, 128, 16, BLACK); // Clear line 2
+    display.setCursor(0,28);
+    display.println("        ON AIR");
     display.display();
   }
 
@@ -203,9 +241,9 @@ void loop() {
     case TX_CHAR:
       if (message[currentChar] == NULL) {
         txState = IDLE;
-        display.fillRect(0, 12, 128, 60, BLACK);
-        display.setCursor(0,45);
-        display.println("      WAIT");
+        display.fillRect(0, 16, 128, 16, BLACK); // Clear line 2
+        display.setCursor(0,28);
+        display.println("WAIT");
         display.display();
         Serial.println("TX cycle complete");
       } else {

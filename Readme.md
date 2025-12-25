@@ -13,7 +13,11 @@ The design ensures reliable 10-minute transmission cycles and provides visual fe
   - `TX_SYMBOL` – transmitting a dot or dash.
   - `TX_PAUSE` – inter-symbol or inter-character pause.
 - **NTP Time Sync**: Automatically synchronizes to UTC for accurate TX cycles.
-- **OLED Display Feedback**: Shows "ON AIR" during transmission, "WAIT" otherwise.
+- **OLED Display Feedback**: 
+  - Shows "ON AIR" during transmission or "WAIT" during rest.
+  - Initalization status.
+  - Programed operating frequency.
+  - Wifi Status.
 - **Serial Logging**: Prints state transitions and TX events.
 
 ## Hardware
@@ -42,7 +46,7 @@ The design ensures reliable 10-minute transmission cycles and provides visual fe
 5. Transmission repeats automatically every 10 minutes.
 
 ## Credentials
-Create a `Credentials.h` file in the project folder with your Wi-Fi credentials:
+Create a `Credentials.h` file in the project folder with your Wi-Fi credentials and callsign:
 
 ```cpp
 #pragma once
